@@ -1,0 +1,4 @@
+package: main
+import:
+- package: github.com/labstack/echo
+- package: github.com/tarm/serial

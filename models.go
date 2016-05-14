@@ -16,24 +16,25 @@ type RAStatusRAW struct {
 }
 
 type RAStatus struct {
-	Id                  string                 `xml:"ID"`
-	T1                  int                    `xml:"T1"`
-	T2                  int                    `xml:"T2"`
-	T3                  int                    `xml:"T3"`
-	PH                  int                    `xml:"PH"`
+	Source              string
+	Id                  string `xml:"ID"`
+	T1                  int    `xml:"T1"`
+	T2                  int    `xml:"T2"`
+	T3                  int    `xml:"T3"`
+	PH                  int    `xml:"PH"`
+	ATOLow              bool   `xml:"ATOLOW"`
+	ATOHigh             bool   `xml:"ATOHIGH"`
+	PWMActinic          int    `xml:"PWMA"`
+	PWMDaylight         int    `xml:"PWMD"`
+	PWMActinicOverride  int    `xml:"PWMAO"`
+	PWMDaylightOverride int    `xml:"PWMDO"`
+	WaterLevel          int    `xml:"WL"`
+	BoardId             int    `xml:"BID"`
 	Relays              map[string]RelayStatus
-	ATOLow              bool                   `xml:"ATOLOW"`
-	ATOHigh             bool                   `xml:"ATOHIGH"`
-	PWMActinic          int                    `xml:"PWMA"`
-	PWMDaylight         int                    `xml:"PWMD"`
-	PWMActinicOverride  int                    `xml:"PWMAO"`
-	PWMDaylightOverride int                    `xml:"PWMDO"`
-	WaterLevel          int                    `xml:"WL"`
 	ExpModules          *ExpModules
 	RelaysExp           map[string]RelayStatus
-	BoardId             int                    `xml:"BID"`
 	AlertFlag           *AlertFlag
-	StatusFlag          *StatusFlag            
+	StatusFlag          *StatusFlag
 }
 
 type AlertFlag struct {

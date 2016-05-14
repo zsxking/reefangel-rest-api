@@ -1,0 +1,30 @@
+hash: 118f85bf63f366a0bac18a8e1ccc7b08a06ce8b71cb4ad9e22fb1874522e5434
+updated: 2016-05-13T20:58:09.511487347-10:00
+imports:
+- name: github.com/dgrijalva/jwt-go
+  version: afef698c326bfd906b11659432544e5aae441d44
+- name: github.com/labstack/echo
+  version: 52a5dcf3cf5d0c4f35e6ed1ea78128662a3d9338
+  subpackages:
+  - engine/standard
+  - middleware
+  - engine
+- name: github.com/labstack/gommon
+  version: b5f03e345acd2096591b6f738cb8d2b9b3231c50
+  subpackages:
+  - log
+  - bytes
+  - color
+- name: github.com/mattn/go-colorable
+  version: e8a10ddc7d2a7fe255f6fd7f501070a4cb62c183
+- name: github.com/mattn/go-isatty
+  version: 7fcbc72f853b92b5720db4a6b8482be612daef24
+- name: github.com/tarm/serial
+  version: 37be519d49878d0098e34fb614136b81e6c87861
+- name: github.com/valyala/fasttemplate
+  version: 3b874956e03f1636d171bda64b130f9135f42cff
+- name: golang.org/x/net
+  version: 1d9fd3b8333e891c0e7353e1adcfe8a612573033
+  subpackages:
+  - context
+devImports: []
