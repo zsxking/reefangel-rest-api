@@ -1,7 +1,7 @@
-all: deps build
+all: build
 
 deps:
-	glide -q install
+	govendor fetch +missing
 
 build:
 	env GOOS=linux GOARCH=arm GOARM=5 go build -v .

@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
 
 	"github.com/tarm/serial"
@@ -32,28 +31,28 @@ func startServer() *RaApi {
 	e.Use(middleware.Recover())
 
 	// Routes
-	e.Get("/ra/v2/stats/wifi/:host", handleGetRAStatusFromWifi)
-	e.Get("/ra/v2/stats/serial", api.handleGetCachedSerialStatus)
-	e.Get("/:command", handleCommandBypass)
+	e.GET("/ra/v2/stats/wifi/:host", handleGetRAStatusFromWifi)
+	e.GET("/ra/v2/stats/serial", api.handleGetCachedSerialStatus)
+	e.GET("/:command", handleCommandProxy)
 
 	// Start server
-	e.Run(standard.New(":2000"))
+	e.Logger.Fatal(e.Start(":2000"))
 
 	return api
 }
 
 func (api *RaApi) StartStatusGetter(name string) {
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(10 * time.Second)
 	go func() {
 		for range ticker.C {
 			response, err := getFromSerial(name, "sa")
 			if err != nil {
-				fmt.Println(err)
+				fmt.Printf("Error getting serial status: %s", err.Error())
 				continue
 			}
 			status, err := parseStatusResponse(response)
 			if err != nil {
-				fmt.Println(err)
+				fmt.Printf("Error parsing serial status response: %s", err.Error())
 				continue
 			}
 			status.Source = name
@@ -67,13 +66,16 @@ func (api *RaApi) handleGetCachedSerialStatus(c echo.Context) error {
 	return c.JSON(http.StatusOK, api.SerialStatus)
 }
 
-func handleCommandBypass(c echo.Context) error {
+func handleCommandProxy(c echo.Context) error {
 	command := c.Param("command")
 	response, err := getFromSerial("ttyUSB0", command)
 	if err != nil {
+		fmt.Printf("Error proxying command %s: %s", command, err.Error())
 		return err
+	} else {
+		fmt.Printf("Proxyed command %s: %s", command, response)
 	}
-	return c.XML(http.StatusOK, response)
+	return c.XMLBlob(http.StatusOK, response)
 }
 
 func parseStatusResponse(response []byte) (*RAStatus, error) {
@@ -81,13 +83,11 @@ func parseStatusResponse(response []byte) (*RAStatus, error) {
 	raStatusRaw := RAStatusRAW{}
 	err := xml.Unmarshal(response, &raStatusRaw)
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 	raStatus := RAStatus{}
 	_ = xml.Unmarshal(response, &raStatus)
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 	raStatus.Relays = NewRelays(

@@ -22,8 +22,8 @@ type RAStatus struct {
 	T2                  int    `xml:"T2"`
 	T3                  int    `xml:"T3"`
 	PH                  int    `xml:"PH"`
-	ATOLow              bool   `xml:"ATOLOW"`
-	ATOHigh             bool   `xml:"ATOHIGH"`
+	ATOLow              int    `xml:"ATOLOW"`
+	ATOHigh             int    `xml:"ATOHIGH"`
 	PWMActinic          int    `xml:"PWMA"`
 	PWMDaylight         int    `xml:"PWMD"`
 	PWMActinicOverride  int    `xml:"PWMAO"`
